@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.DS_Store
+data/raw/*
+!data/raw/usgs/
+!data/raw/webb_2025/
+data/processed/
+results/*/checkpoints/
+results/smoke/

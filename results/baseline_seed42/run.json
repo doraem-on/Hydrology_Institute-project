@@ -1,0 +1,69 @@
+{
+  "config": {
+    "data": "data/processed/streamflow.csv",
+    "output": "results/baseline_seed42",
+    "lookback": 30,
+    "hidden": 32,
+    "epochs": 20,
+    "patience": 5,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "seed": 42,
+    "threads": 2,
+    "train_end": "2009-12-31",
+    "validation_end": "2014-12-31",
+    "calibration_end": "2019-12-31"
+  },
+  "data_sha256": "0e2b11e6dee46af062f5f32148cda0bfb18e075dfbaf5b1609848377740b42eb",
+  "split": {
+    "train": {
+      "n": 7275,
+      "start": "1990-01-31",
+      "end": "2009-12-31"
+    },
+    "validation": {
+      "n": 1826,
+      "start": "2010-01-01",
+      "end": "2014-12-31"
+    },
+    "calibration": {
+      "n": 1826,
+      "start": "2015-01-01",
+      "end": "2019-12-31"
+    },
+    "test": {
+      "n": 2192,
+      "start": "2020-01-01",
+      "end": "2025-12-31"
+    }
+  },
+  "normalization": {
+    "mean": 5.261270748876764,
+    "scale": 1.1002428292280069
+  },
+  "model_order": [
+    "lstm",
+    "stacked_lstm",
+    "bilstm",
+    "transformer"
+  ],
+  "smearing": [
+    1.0406401590840344,
+    1.0341675963494572,
+    1.0356323145200186,
+    1.0273646964989172
+  ],
+  "training_seconds": {
+    "lstm": 4.192839709001419,
+    "stacked_lstm": 8.485023042001558,
+    "bilstm": 8.49677587500264,
+    "transformer": 20.61864337499719
+  },
+  "versions": {
+    "torch": "2.14.1",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "forecast_protocol": "Rolling next-day hindcast from the previous 30 days (or configured lookback); observed past test flows become available at each issue date. No future flows or weather."
+}

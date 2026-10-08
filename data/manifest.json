@@ -1,0 +1,81 @@
+{
+  "retrieval_date": "2026-10-08",
+  "sources": [
+    {
+      "id": "webb_2025",
+      "status": "downloaded",
+      "landing_url": "https://www.mdpi.com/article/10.3390/w17223301/s1",
+      "method": "Publisher browser supplementary-material download",
+      "files": [
+        {
+          "path": "data/raw/webb_2025/water-17-03301-s001.zip",
+          "bytes": 681810,
+          "sha256": "4c273c0a1b416b0e105881922e78e7aec4830b74563135b96b1d101b751b212d"
+        },
+        {
+          "path": "data/raw/webb_2025/Table S2.xlsx",
+          "bytes": 85270,
+          "sha256": "d6f113dfe2ea34264de432da05fb95443778b2410c85b18da32bafe34d370734"
+        }
+      ],
+      "purpose": "Wetland phosphorus literature data; not used in streamflow models"
+    },
+    {
+      "id": "anderson_2024",
+      "status": "blocked_by_human_verification",
+      "landing_url": "https://www.sciencedirect.com/science/article/pii/S1470160X24014262",
+      "related_dataset_url": "https://doi.org/10.6073/pasta/3f251395d82eafb33a93a9f3ebfb858c",
+      "related_package": "edi.1810.1",
+      "files": [],
+      "note": "Publisher and EDI portal require human verification; metadata service HTTP 403"
+    },
+    {
+      "id": "uea_2020",
+      "status": "download_failed_http_403",
+      "landing_url": "https://research-portal.uea.ac.uk/en/datasets/integrated-constructed-wetlands-icw-water-quality-data-for-the-ri/",
+      "download_url": "https://research-portal.uea.ac.uk/files/197849717/Wetland_Data.csv",
+      "files": [],
+      "note": "Catalogue accessed; direct and browser download attempts did not save CSV"
+    },
+    {
+      "id": "dykes_2025",
+      "status": "raw_data_available_on_request_not_downloaded",
+      "landing_url": "https://doi.org/10.1016/j.jwpe.2025.107350",
+      "reference_pdf_url": "https://wrap.warwick.ac.uk/id/eprint/190387/1/1-s2.0-S2214714425004222-main.pdf",
+      "files": [
+        {
+          "path": "data/raw/dykes_2025/article_reference_only.pdf",
+          "bytes": 3189610,
+          "sha256": "2cfc9d84f131b16f967bea91477080a20713349fcf74c3f5d7ffbd223d55fdb2"
+        }
+      ],
+      "note": "Only the paper was downloaded. Page 16 states data available on request. PDF is local only."
+    },
+    {
+      "id": "usgs_01646500",
+      "status": "downloaded_and_preprocessed",
+      "landing_url": "https://waterdata.usgs.gov/monitoring-location/USGS-01646500/",
+      "download_url": "https://waterservices.usgs.gov/nwis/dv/?format=json&sites=01646500&startDT=1990-01-01&endDT=2025-12-31&parameterCd=00060&statCd=00003&siteStatus=all",
+      "files": [
+        {
+          "path": "data/raw/usgs/01646500_daily_1990_2025.json",
+          "bytes": 968623,
+          "sha256": "c6ff95024a4abfd8b843ae57a337db305506754f3ed53ea3ab175331b3c26147"
+        },
+        {
+          "path": "data/processed/streamflow.csv",
+          "bytes": 659794,
+          "sha256": "0e2b11e6dee46af062f5f32148cda0bfb18e075dfbaf5b1609848377740b42eb"
+        },
+        {
+          "path": "data/processed/streamflow.json",
+          "bytes": 502,
+          "sha256": "d9f6de9a09031f9fdf92c3743be3babbf3254135e1d89fcf441fdda1e3478e88"
+        }
+      ],
+      "purpose": "User-approved additional daily streamflow benchmark",
+      "attribution": "U.S. Geological Survey, National Water Information System daily values",
+      "licence_reference": "https://www.usgs.gov/data-management/data-licensing"
+    }
+  ]
+}
