@@ -11,6 +11,7 @@ dependencies = ["numpy>=1.26", "pandas>=2.2", "scipy>=1.12", "torch>=2.2", "matp
 
 [project.optional-dependencies]
 test = ["pytest>=8"]
+satellite = ["scikit-learn>=1.5,<2"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

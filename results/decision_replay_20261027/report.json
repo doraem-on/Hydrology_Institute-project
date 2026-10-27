@@ -1,0 +1,41 @@
+{
+  "status": "exploratory_scenario_not_field_validation",
+  "input_sha256": "d2252401d3e90a6d6e71c1e5a5ad90a6de50fbffec9f7ed35effc475b161d288",
+  "source": "results/baseline_seed42/test_predictions.csv",
+  "demand_m3_per_day": [
+    1000000.0,
+    1000000.0,
+    1000000.0
+  ],
+  "environmental_flow_cms": 20.0,
+  "diversion_fraction": 0.1,
+  "policy_parameters": "Hypothetical, not basin-calibrated or legally prescribed",
+  "satellite_inputs_used": false,
+  "results": [
+    {
+      "policy": "bma_lower_5pct",
+      "days": 2192,
+      "overcommitment_day_fraction": 0.014598540145985401,
+      "mean_overcommitment_m3": 2716.8109408094697,
+      "mean_unmet_demand_m3": 1838129.0153838482,
+      "mean_foregone_feasible_delivery_m3": 311500.51338248566
+    },
+    {
+      "policy": "bma_mean",
+      "days": 2192,
+      "overcommitment_day_fraction": 0.635492700729927,
+      "mean_overcommitment_m3": 78525.80700492238,
+      "mean_unmet_demand_m3": 1568797.1373903912,
+      "mean_foregone_feasible_delivery_m3": 42168.63538902858
+    },
+    {
+      "policy": "persistence",
+      "days": 2192,
+      "overcommitment_day_fraction": 0.5447080291970803,
+      "mean_overcommitment_m3": 63317.48917306905,
+      "mean_unmet_demand_m3": 1589306.4438260742,
+      "mean_foregone_feasible_delivery_m3": 62677.94182471164
+    }
+  ],
+  "interpretation": "Lower-tail planning trades delivery for fewer supply overcommitments; no universal winner implied."
+}

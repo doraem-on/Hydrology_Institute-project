@@ -1,0 +1,28 @@
+{
+  "validation_date": "2026-10-27",
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "scipy": "1.18.1",
+  "scikit_learn": "1.9.1",
+  "earth_engine_execution": "not_run_no_local_credentials",
+  "pytest": "28 passed",
+  "javascript": "node --check passed for both scripts",
+  "files_sha256": {
+    "src/hydrology/remote_sensing.py": "c2fa53dac3d81172256c7e72a8d88f3d771aaf18a2765ed4b84a72b189ec6ccd",
+    "src/hydrology/models.py": "e51df8e28552f23bddd4ee6bc489a3f3ee60d0821f397bfd67e0ce5e036a9a5c",
+    "src/hydrology/twin.py": "10e0c81be94a053a04f7cae46c7d1ec20f33020d2a641895b4015f84a867c852",
+    "src/hydrology/bma.py": "64d11401eea771587236127d13b2d3950955551720dc11fc8b6cb264aa9cac63",
+    "src/hydrology/__init__.py": "0aa5880fd9fd32a897c30e0b9c8cc817cf0be17f343a0b9efbcff38c5e8546e0",
+    "src/hydrology/decision_replay.py": "d27ef01e368e687e846256d26a0bb4e20a3873b212f04ecfbb50ff1a34ab7bf6",
+    "src/hydrology/satellite_pipeline.py": "60a62364a4ba9c8562c41c83ee262238b6a5b7d633653a8182baefb49bcc1b8a",
+    "src/hydrology/train.py": "0770800177960d853f9a86c44c82222cbaeeda972497b39cc1b9188035563760",
+    "src/hydrology/data.py": "58121ef479f4e35dd01625bba2e500db0693f3cd72516511fba80fba6e347f71",
+    "earth_engine/event_screening.js": "877ea594ddfe2e82d0541217748b7f52d03a7bd061ab5c7f59a92400f0946983",
+    "earth_engine/export_observations.js": "feb82d568a0a6d67eef1071f319bbc378d9ffc5b6f360506241be113f7bccfe4",
+    "tests/test_twin.py": "14b5bbf9cb75dc5ffb339d2d819722172d42980290f8cbaa842c5e84b91bb91b",
+    "tests/test_forecasting.py": "d39408b9eefbe541996e8ddccce4067c3789971164ad8d3d23c0ffc02a7061e1",
+    "tests/test_remote_sensing.py": "dcc3a5f9186850a9498a208a7c6b1983d2cb3d555e886f1fb91bf3197a1de9db"
+  },
+  "satellite_cli": "moisture and rice passed end-to-end with synthetic fixtures; no empirical accuracy claim"
+}

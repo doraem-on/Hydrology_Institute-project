@@ -1,5 +1,29 @@
 # Hydrology Institute project
 
+## River-basin digital-twin extension
+
+The [implementation and research protocol](docs/digital_twin.md) adds SAR
+rice classification, MODIS/TOTRAM surface wetness, flood and landslide candidate
+screening, optical turbidity indices, observation-availability checks and
+allocation scenarios. Earth Engine exports are in `earth_engine/`; actual
+satellite execution and independent field validation remain outstanding.
+The existing Potomac flow benchmark is preserved. Its new allocation replay
+uses explicitly hypothetical demand and policy, not a validated basin plan.
+
+The [working manuscript](paper/river_basin_digital_twin/main.tex) contains the
+implemented methods and exploratory replay results, with unfinished satellite
+validation clearly marked. The [replay report](results/decision_replay_20261027/report.json)
+and [validation record](results/decision_replay_20261027/implementation_validation.json)
+record the current evidence. Open the manuscript folder in the LaTeX editor.
+
+```bash
+uv pip install --python .venv/bin/python -r requirements-satellite-lock.txt
+.venv/bin/python -m pytest -q
+PYTHONPATH=src .venv/bin/python -m hydrology.decision_replay --output results/my_decision_replay
+```
+
+## Existing streamflow benchmark
+
 This repository implements next-day streamflow forecasting with LSTM, stacked
 LSTM, bidirectional LSTM and a Transformer, followed by calibrated forecast
 Bayesian model averaging (BMA). It also records the data sources from the
