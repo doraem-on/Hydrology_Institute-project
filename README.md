@@ -2,12 +2,13 @@
 
 ## Water resources project submission
 
-The [submission abstract](output/pdf/Water_Resources_Submission_Abstract.pdf)
-summarizes the next-day Potomac discharge benchmark, its water allocation
-simulation, and a separate hourly inflow study at Gandak Barrage.
-The [Gandak results and reproduction instructions](results/gandak_hourly/README.md)
-include the archived observations, errors at each forecast lead, and the
-September 2026 flood crest.
+The [submission abstract](output/pdf/Water_Resources_Submission_Abstract.pdf) and
+[full paper](output/pdf/Water_Resources_Forecast_Decisions.pdf) report the Gandak
+warning experiment and the Potomac allocation study. The [editable manuscript](paper/water_resources/manuscript.md)
+includes related work, results and limitations. The [Gandak reproduction guide](results/gandak_warning/README.md)
+documents the archived upstream observations, issued precipitation forecasts and
+matched comparison. The [original Gandak pilot](results/gandak_hourly/README.md)
+records the barrage-only benchmark.
 
 ## River-basin digital-twin extension
 

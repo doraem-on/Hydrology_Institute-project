@@ -1,0 +1,6 @@
+method,threshold_m3s,eligible_issues,alert_issues,false_alert_issues,observed_onsets,assessable_onsets,onsets_warned
+persistence,5021.65800,739,0,0,1,1,0
+barrage,5021.65800,739,0,0,1,1,0
+gauge,5021.65800,739,4,0,1,1,1
+rain,5021.65800,739,0,0,1,1,0
+combined,5021.65800,739,5,0,1,1,1

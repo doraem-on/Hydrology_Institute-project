@@ -13,7 +13,7 @@ TEST_START = pd.Timestamp("2026-09-16")
 EVENT_ISSUE = pd.Timestamp("2026-09-27 14:00")
 
 
-def run(folder=RESULTS):
+def barrage_features(folder=RESULTS):
     raw = pd.read_csv(folder / "source_inflow.csv", parse_dates=["timestamp"])
     q = raw.set_index("timestamp").inflow_m3s.sort_index()
     if q.index.has_duplicates or (q.index != q.index.floor("h")).any():
@@ -30,6 +30,24 @@ def run(folder=RESULTS):
         features[f"change_{lag}h"] = z - z.shift(lag)
     # Only issue a forecast after 25 consecutive observed clock hours.
     features = features.where(q.rolling(25).count().eq(25), axis=0)
+    return q, features
+
+
+def predict_ridge(features, z, target, train, test):
+    x = features[train]
+    # Scale using training data. Fit the log change from issue time directly
+    # for each horizon, with a fixed ridge penalty and unpenalized intercept.
+    mean, std = x.mean(), x.std().replace(0, 1.0)
+    x = ((x - mean) / std).to_numpy()
+    y = (np.log1p(target[train]) - z[train]).to_numpy()
+    weights = np.linalg.solve(x.T @ x + np.eye(x.shape[1]), x.T @ (y - y.mean()))
+    change = ((features[test] - mean) / std).to_numpy() @ weights + y.mean()
+    return np.maximum(0, np.expm1(z[test].to_numpy() + change))
+
+
+def run(folder=RESULTS):
+    q, features = barrage_features(folder)
+    z = np.log1p(q)
     forecasts = []
     scores = []
     for h in range(1, 73):
@@ -38,15 +56,7 @@ def run(folder=RESULTS):
         usable = features.notna().all(axis=1) & target.notna()
         train = usable & (q.index + lead < TEST_START)
         test = usable & (q.index >= TEST_START)
-        x = features[train]
-        # Scale using training data. Fit the log change from issue time directly
-        # for each horizon, with a fixed ridge penalty and unpenalized intercept.
-        mean, std = x.mean(), x.std().replace(0, 1.0)
-        x = ((x - mean) / std).to_numpy()
-        y = (np.log1p(target[train]) - z[train]).to_numpy()
-        weights = np.linalg.solve(x.T @ x + np.eye(x.shape[1]), x.T @ (y - y.mean()))
-        change = ((features[test] - mean) / std).to_numpy() @ weights + y.mean()
-        prediction = np.maximum(0, np.expm1(z[test].to_numpy() + change))
+        prediction = predict_ridge(features, z, target, train, test)
         out = pd.DataFrame({"issue_time": q.index[test], "lead_h": h,
                             "valid_time": q.index[test] + lead,
                             "observed_m3s": target[test].to_numpy(),

@@ -1,0 +1,4 @@
+last_flow_band,lower_cut_m3s,upper_cut_m3s,days,coverage,misses_below,misses_above,mean_width_m3s
+low,59.0406,933.0401,339,0.9440,3,16,28.5142
+middle,59.0406,933.0401,1782,0.9287,42,85,154.2010
+high,59.0406,933.0401,71,0.8873,4,4,821.8323

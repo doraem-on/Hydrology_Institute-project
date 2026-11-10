@@ -1,0 +1,8 @@
+{
+  "gfs_assumed_release_hours": 24,
+  "timestamps": "Asia/Kolkata in forecast tables",
+  "inputs": {
+    "rain.csv": "31fda338be1df84a3d5e33460cd008b1448acfef9da1f3892026f31f6b9df94c",
+    "gauge.csv": "a47a78aa0fca9688a973ead18b0865530f4d96be1b6ed472f791b8e8b6efb307"
+  }
+}
