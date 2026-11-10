@@ -1,5 +1,14 @@
 # Hydrology Institute project
 
+## Water resources project submission
+
+The [submission abstract](output/pdf/Water_Resources_Submission_Abstract.pdf)
+summarizes the next-day Potomac discharge benchmark, its water allocation
+simulation, and a separate hourly inflow study at Gandak Barrage.
+The [Gandak results and reproduction instructions](results/gandak_hourly/README.md)
+include the archived observations, errors at each forecast lead, and the
+September 2026 flood crest.
+
 ## River-basin digital-twin extension
 
 The [implementation and research protocol](docs/digital_twin.md) adds SAR
