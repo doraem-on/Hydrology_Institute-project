@@ -1,0 +1,7 @@
+# Daily withdrawal replay at Little Falls
+
+USGS supplies a [method description](https://www.usgs.gov/centers/chesapeake-bay-activities/science/chesapeake-bay-estimated-streamflow-methods) and [daily flow data](https://waterservices.usgs.gov/nwis/dv/?format=rdb&sites=01646501,01646502,01646500&startDT=2020-01-01&endDT=2025-12-31&parameterCd=00060&statCd=00003). The unmodified response is archived in data/raw/usgs/little_falls_daily_2020_2025.rdb, SHA-256 ad48b407669261229de6e34a24273464dac6527b42bc84c4891ae82758a88952. The query returned measured and diversion-adjusted discharges. USGS describes the difference as the diversion reported by cooperating agencies. Daily differences are subject to rounding.
+
+    PYTHONPATH=src .venv/bin/python scripts/potomac_diversions.py
+
+diversion_by_date.csv preserves the two flows, qualifiers and inclusion status for all forecast dates. Only A and A:R (approved, including approved revisions) and positive differences enter the replay. We convert cfs to m³/day with 0.028316846592 × 86,400. The calculation uses fulfilled daily diversion as a retrospective stand-in for requested volume. All scenarios use exactly the same dates, saved downstream flows and original hypothetical reserve and cap. The matched-mean constant isolates the effect of varying demand across dates from its average size. The break-even ratio divides additional unmet volume by avoided overcommitment using the lower forecast quantile versus the ensemble mean. No measured operating cost is assumed.

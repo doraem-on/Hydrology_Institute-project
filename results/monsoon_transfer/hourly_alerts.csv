@@ -1,0 +1,2 @@
+method,threshold_m3s,eligible_issues,alert_issues,false_alert_issues,false_alert_runs,observed_onsets,assessable_onsets,onsets_warned,missed_assessable_onsets,window_hours,complete_24h_forecast_issues
+combined,5021.658,739,6,0,0,1,1,1,0,999,809

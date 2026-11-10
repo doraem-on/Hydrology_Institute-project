@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from hydrology.gandak_hourly import EVENT_ISSUE, TEST_START, barrage_features, predict_ridge
+from hydrology.gandak_hourly import EVENT_ISSUE, TEST_START, barrage_features, predict_ridge, fit_ridge, apply_ridge
 
 METHODS = ["persistence", "barrage", "gauge", "rain", "combined"]
 HOUR = pd.Timedelta(hours=1)
@@ -56,20 +56,22 @@ def rain_matrix(path):
     return points.mean(axis=1, skipna=False).unstack().reindex(columns=range(120))
 
 
-def warning_audit(predictions, q, threshold):
+def warning_audit(predictions, q, threshold, methods=METHODS, start=TEST_START):
     # One alert per eligible hourly decision, and one lead-time score per onset.
     # An onset requires 24 consecutive observed hours strictly below the threshold.
     future = pd.concat([q.shift(-h) for h in range(1, 25)], axis=1)
     actual_high = future.max(axis=1).where(future.notna().all(axis=1)) >= threshold
     onsets = q.index[(q >= threshold) & (q.shift(1).rolling(24).max() < threshold)
-                     & (q.index >= TEST_START)]
+                     & (q.index >= start)]
     window = predictions[predictions.lead_h <= 24].groupby("issue_time")
-    peaks = window[METHODS].max()
+    peaks = window[methods].max()
     eligible = peaks.index[(window.size() == 24) & (q.reindex(peaks.index) < threshold)]
     results, events = [], []
-    for method in METHODS:
+    for method in methods:
         alerts = eligible[peaks.loc[eligible, method] >= threshold]
         false_count = int((~actual_high.loc[alerts]).sum())
+        false_times = alerts[~actual_high.loc[alerts].to_numpy()]
+        false_episodes = int(false_times.to_series().diff().ne(HOUR).sum())
         leads = []
         for onset in onsets:
             opportunities = eligible[(eligible < onset) & (eligible >= onset - 24 * HOUR)]
@@ -81,20 +83,27 @@ def warning_audit(predictions, q, threshold):
                 leads.append(warning)
         results.append(dict(method=method, threshold_m3s=threshold, eligible_issues=len(eligible),
                             alert_issues=len(alerts), false_alert_issues=false_count,
-                            observed_onsets=len(onsets), assessable_onsets=len(leads),
+                            false_alert_runs=false_episodes, observed_onsets=len(onsets), assessable_onsets=len(leads),
                             onsets_warned=int(np.isfinite(leads).sum())))
     return pd.DataFrame(results), pd.DataFrame(events)
 
 
-def evaluate(folder, output, delay=12):
-    if not 6 <= delay <= 24:
-        raise ValueError("GFS availability lag must be 6 to 24 hours")
-    q, base = barrage_features()
+def model_inputs(folder, barrage_folder):
+    q, base = barrage_features(barrage_folder)
     clock = q.index.tz_localize("Asia/Kolkata").tz_convert("UTC")
     level = gauge_at_issue(pd.read_csv(folder / "gauge.csv"), clock)
     gauge = pd.DataFrame({"upstream_level": level.to_numpy(),
                           "upstream_change_6h": level.diff(6).to_numpy()}, index=q.index)
     rainfall = rain_matrix(folder / "rain.csv")
+    return q, base, clock, gauge, rainfall
+
+
+def evaluate(folder, output, delay=12):
+    if not 6 <= delay <= 24:
+        raise ValueError("GFS availability lag must be 6 to 24 hours")
+    q, base, clock, gauge, rainfall = model_inputs(folder, Path("results/gandak_hourly"))
+    frozen = dict(training_target_cutoff_ist=str(TEST_START), gfs_delay_hours=delay,
+                  threshold_m3s=q[q.index < TEST_START].quantile(0.95), leads={})
     all_predictions, scores = [], []
     z = np.log1p(q)
     for h in range(1, 73):
@@ -110,7 +119,14 @@ def evaluate(folder, output, delay=12):
                               "observed": target[test].to_numpy(), "persistence": q[test].to_numpy()})
         for method, features in [("barrage", base), ("gauge", base.join(gauge)),
                                  ("rain", base.join(rain)), ("combined", extended)]:
-            table[method] = predict_ridge(features, z, target, train, test)
+            if method == "combined":
+                model = fit_ridge(features, z, target, train)
+                model["gauge_range_m"] = [float(gauge.upstream_level[train].min()),
+                                          float(gauge.upstream_level[train].max())]
+                frozen["leads"][str(h)] = model
+                table[method] = apply_ridge(model, features[test], z[test])
+            else:
+                table[method] = predict_ridge(features, z, target, train, test)
         for method in METHODS:
             errors = table[method] - table.observed
             scores.append(dict(lead_h=h, method=method, train_pairs=train.sum(), test_pairs=test.sum(),
@@ -139,6 +155,7 @@ def evaluate(folder, output, delay=12):
         peak = event.loc[event[name].idxmax()]
         peaks.append(dict(series=name, maximum_m3s=peak[name], first_hour_of_maximum=peak.lead_h))
     output.mkdir(parents=True, exist_ok=True)
+    (output / "frozen_combined.json").write_text(json.dumps(frozen, indent=2) + "\n")
     for name, frame in [("scores", pd.DataFrame(scores)), ("alerts", alerts), ("onsets", events),
                         ("threshold_sensitivity", pd.concat(sensitivities)),
                         ("september_crest", pd.DataFrame(peaks)), ("september_forecast", event)]:

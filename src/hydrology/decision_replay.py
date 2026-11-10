@@ -25,20 +25,26 @@ def replay(frame, *, demand_m3, environmental_flow_cms, diversion_fraction):
     values = frame[columns].to_numpy(float)
     if not len(frame) or not np.isfinite(values).all() or (values < 0).any():
         raise ValueError('Invalid forecast/observation values')
+    demands = np.asarray(demand_m3, dtype=float)
+    if demands.ndim == 1:
+        demands = np.broadcast_to(demands, (len(frame), len(demands)))
+    if demands.ndim != 2 or demands.shape[0] != len(frame) or not demands.shape[1]:
+        raise ValueError("Expected a user demand vector or one demand row per forecast day")
     observed_budget = np.maximum(frame.observed_cms.to_numpy()-environmental_flow_cms, 0)*86400*diversion_fraction
     rows = []
     for policy, col in [('persistence', 'persistence_cms'), ('bma_mean', 'bma_mean_cms'),
                         ('bma_lower_5pct', 'bma_lower90_cms')]:
         for index, row in enumerate(frame.itertuples(index=False)):
-            result = allocate_water([getattr(row, col)], demand_m3,
+            demand = demands[index]
+            result = allocate_water([getattr(row, col)], demand,
                 environmental_flow_cms=environmental_flow_cms, diversion_fraction=diversion_fraction)
             planned = float(result['allocation_m3'].sum())
             feasible = min(planned, observed_budget[index])
-            oracle = min(float(np.sum(demand_m3)), observed_budget[index])
+            oracle = min(float(np.sum(demand)), observed_budget[index])
             rows.append({'date': str(row.date), 'policy': policy,
                 'planned_m3': planned, 'feasible_delivery_m3': feasible,
                 'overcommitment_m3': max(planned-observed_budget[index], 0),
-                'unmet_demand_m3': float(np.sum(demand_m3))-feasible,
+                'unmet_demand_m3': float(np.sum(demand))-feasible,
                 'foregone_feasible_delivery_m3': oracle-feasible})
     result = pd.DataFrame(rows)
     summary = []

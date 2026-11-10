@@ -8,7 +8,9 @@ warning experiment and the Potomac allocation study. The [editable manuscript](p
 includes related work, results and limitations. The [Gandak reproduction guide](results/gandak_warning/README.md)
 documents the archived upstream observations, issued precipitation forecasts and
 matched comparison. The [original Gandak pilot](results/gandak_hourly/README.md)
-records the barrage-only benchmark.
+records the barrage-only benchmark. The [monsoon validation results](results/monsoon_transfer/README.md)
+include the frozen hourly model, crest flags and independently tested daily benchmark.
+The [Potomac diversion replay](results/potomac_diversions/README.md) uses USGS-derived daily withdrawals.
 
 ## River-basin digital-twin extension
 

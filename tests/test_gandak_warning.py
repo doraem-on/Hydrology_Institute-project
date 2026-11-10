@@ -33,3 +33,14 @@ def test_warning_lead_and_false_issues():
     assert set(events.first_warning_hours) == {3}
     assert set(alerts.eligible_issues) == {2}
     assert set(alerts.false_alert_issues) == {1}
+
+
+def test_deposited_forecasts_reproduce_original_predictions_and_flag_crest():
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1] / "results"
+    old = pd.read_csv(root / "gandak_warning/forecasts.csv.gz")
+    new = pd.read_csv(root / "monsoon_transfer/frozen_forecasts.csv.gz")
+    pd.testing.assert_frame_equal(new[["issue_time", "lead_h", "combined", "observed"]],
+                                  old[["issue_time", "lead_h", "combined", "observed"]])
+    crest = new[new.issue_time == "2026-09-27 14:00:00"]
+    assert len(crest) == 72 and crest.above_training.all()

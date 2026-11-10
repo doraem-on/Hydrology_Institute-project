@@ -82,3 +82,15 @@ def test_connected_plan_uses_available_satellite_state_and_abstains_when_stale()
     assert len(result['observation_provenance']) == 3
     stale = plan_from_observations(records, '2024-03-01', units, [10, 15, 20], **options)
     assert stale['status'] == 'insufficient_observations' and stale['allocation'] is None
+
+
+def test_varying_daily_demand_uses_only_the_corresponding_row():
+    f = pd.DataFrame(dict(date=["2025-01-01", "2025-01-02"], observed_cms=[4, 4],
+        persistence_cms=[5, 5], bma_mean_cms=[5, 5], bma_lower90_cms=[3, 3]))
+    opts = dict(environmental_flow_cms=0., diversion_fraction=1.)
+    schedule = [[1000., 2000.], [400000., 50000.]]
+    combined, _ = replay(f, demand_m3=schedule, **opts)
+    expected = pd.concat([replay(f.iloc[[i]], demand_m3=row, **opts)[0]
+                          for i, row in enumerate(schedule)])
+    pd.testing.assert_frame_equal(combined.sort_values(["date", "policy"]).reset_index(drop=True),
+                                  expected.sort_values(["date", "policy"]).reset_index(drop=True))

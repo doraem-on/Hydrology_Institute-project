@@ -33,7 +33,7 @@ def barrage_features(folder=RESULTS):
     return q, features
 
 
-def predict_ridge(features, z, target, train, test):
+def fit_ridge(features, z, target, train):
     x = features[train]
     # Scale using training data. Fit the log change from issue time directly
     # for each horizon, with a fixed ridge penalty and unpenalized intercept.
@@ -41,8 +41,19 @@ def predict_ridge(features, z, target, train, test):
     x = ((x - mean) / std).to_numpy()
     y = (np.log1p(target[train]) - z[train]).to_numpy()
     weights = np.linalg.solve(x.T @ x + np.eye(x.shape[1]), x.T @ (y - y.mean()))
-    change = ((features[test] - mean) / std).to_numpy() @ weights + y.mean()
-    return np.maximum(0, np.expm1(z[test].to_numpy() + change))
+    return dict(features=list(features.columns), mean=mean.tolist(), std=std.tolist(),
+                weights=weights.tolist(), intercept=float(y.mean()))
+
+
+def apply_ridge(model, features, z):
+    x = features.loc[:, model["features"]].to_numpy()
+    change = ((x - model["mean"]) / model["std"]) @ model["weights"] + model["intercept"]
+    return np.maximum(0, np.expm1(z.to_numpy() + change))
+
+
+def predict_ridge(features, z, target, train, test):
+    model = fit_ridge(features, z, target, train)
+    return apply_ridge(model, features[test], z[test])
 
 
 def run(folder=RESULTS):
