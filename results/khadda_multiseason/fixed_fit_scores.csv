@@ -1,0 +1,13 @@
+level,stage_m,policy,matched_below_hours,alert_hours,false_alert_hours,observed_onsets,assessable_onsets,warned,missed,false_alert_runs,sample
+warning,95.0,local,1658,18,9,6,6,4,2,1.0,2024
+warning,95.0,upstream,1658,56,8,6,6,5,1,1.0,2024
+danger,96.0,local,3557,6,0,3,3,2,1,0.0,2024
+danger,96.0,upstream,3557,24,0,3,3,3,0,0.0,2024
+warning,95.0,local,1646,32,17,8,8,4,4,10.0,2025
+warning,95.0,upstream,1646,102,29,8,8,8,0,14.0,2025
+danger,96.0,local,3622,0,0,0,0,0,0,0.0,2025
+danger,96.0,upstream,3622,0,0,0,0,0,0,0.0,2025
+warning,95.0,local,2810,59,39,12,12,7,5,23.0,2026
+warning,95.0,upstream,2810,184,94,12,12,12,0,36.0,2026
+danger,96.0,local,3484,1,0,1,1,1,0,0.0,2026
+danger,96.0,upstream,3484,4,0,1,1,1,0,0.0,2026

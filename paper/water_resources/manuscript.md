@@ -94,9 +94,25 @@ At the higher 96 m danger level, the upstream model warned for all four assessab
 
 ---
 
+### How often did the forecasts give six hours of notice?
+
+We counted all 26 crossings, including those the models missed, and asked whether each warning came at least six hours ahead. Six hours is an illustrative planning window. Actual preparation time depends on local procedures and on when the warning reaches its recipients.
+
+![Warning lead and false alerts](../../results/khadda_multiseason/preparation_time.png)
+
+Figure 2. Fractions show how many observed crossings had at least six hours of model warning. False alert hours are counted across the same 6,114 eligible below-threshold hours. The two panels compare forecasts at the 95 m warning level.
+
+With yearly refitting, 19 of 26 crossings had six hours’ notice with the upstream gauge, compared with eight using Khadda alone. At twelve hours, the counts were nine and seven. The six-hour advantage appeared in each test season, although 2025 accounted for much of the increase in false alerts.
+
+Could an operator keep the original model for several years? We fitted each lead once using the partial 2023 season and replayed 2024–2026 with those coefficients. The fixed upstream model caught 25 crossings, giving six hours’ notice for 20. It raised 131 false alert hours, almost twice the 68 from annual refitting. The fixed town-only model caught 15 crossings and raised 65 false alert hours. Both training designs used the same 2023 fit for their first test season. This retrospective check reuses the three test seasons. A prospective monsoon with forecasts logged before outcomes would provide independent confirmation.
+
+---
+
 ### Official forecasts, rain and gauge failures
 
 We verified ten dated Bihar Water Resources Department bulletins [15] against the same Khadda observation and our two models at exactly the same 24-hour lead. Each 15:00 IST bulletin gave a water level for 15:00 the next day. Mean absolute errors were 9.0 cm for the official product, 11.2 cm with Triveni, and 13.3 cm with Khadda alone. The one matched observation at or above 95 m was 96.00 m on 27 September 2026. All three forecasts exceeded 95 m, but fell below 96 m. The official forecast was 95.99 m. None forecast a high level on the other nine dates. This sparse set measures stage accuracy at specified hours. It cannot establish the first public alert across all 26 crossings.
+
+We also recovered four 2025 state bulletins with explicit half-hour issue times and hourly target times [17]. We paired all 18 future targets within our daily horizon with the latest model run available when each bulletin was issued, 30 minutes earlier. Mean absolute errors were 12.0 cm for the official forecasts, 10.4 cm for the town-only model and 9.3 cm with Triveni. All 18 observed stages were below 95 m. Those quiet-water checks cannot establish relative flood-warning skill, and their shorter leads differ from the 2026 next-day comparison.
 
 The CWC advisory dated 3 July 2024 listed severe conditions at Khadda for 6 July [16]. The town reached 96 m at 22:00 IST on 6 July. The upstream model first signalled that day at 15:00 and the local model at 18:00. In that case the published advisory identified the danger days earlier. It covered seven days, while our models forecast up to 24 hours ahead.
 
@@ -168,7 +184,7 @@ For a dated example, on 10 November 2026 a refit using the available approved ar
 
 ### Next field test
 
-A further monsoon with hourly barrage inflow, timestamped upstream readings and archived weather runs would allow the frozen model’s warnings, misses, false alarms and crest errors to be scored together. A continuous archive of operational forecasts and delivery receipts would extend the ten matched Khadda bulletins to a test of warning delivery across a full season.
+A further monsoon with hourly barrage inflow, timestamped upstream readings and archived weather runs would allow the frozen model’s warnings, misses, false alarms and crest errors to be scored together. A continuous archive of operational forecasts and delivery receipts would extend our sparse bulletin comparisons to a test of warning delivery across a full season.
 
 ---
 
@@ -205,3 +221,5 @@ A further monsoon with hourly barrage inflow, timestamped upstream readings and 
 [15] Bihar WRD, FMIS daily water level and flood forecasts, dated bulletins. https://www.fmiscwrdbihar.gov.in/bulletin/
 
 [16] Central Water Commission, Daily Flood Situation Report cum Advisories, 3 July 2024. https://cwc.gov.in/sites/default/files/dfsitrepca-03.07.2024.pdf
+
+[17] Bihar WRD, Gandak basin gauge forecast issued 26 September 2025. All four dated source links and transcriptions are provided with the deposited results. https://betastate.bihar.gov.in/file_2/FileUpload/2025/Oct/29-Oct-2025/43/DyPage/680817b8-86bf-4c76-981e-84bdf5d5612d.pdf

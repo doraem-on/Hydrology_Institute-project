@@ -1,0 +1,17 @@
+design,season,model,crossings,warned,six_hours_or_more,twelve_hours_or_more,matched_eligible_hours,false_alert_hours,both_warned,median_paired_gain_h
+annual,all,local,26,15,8,7,6114,49,14,4.50
+annual,all,upstream,26,24,19,9,6114,68,14,4.50
+annual,2024,local,6,4,0,0,1658,9,3,8.00
+annual,2024,upstream,6,5,4,1,1658,8,3,8.00
+annual,2025,local,8,4,3,3,1646,11,4,2.50
+annual,2025,upstream,8,8,7,3,1646,38,4,2.50
+annual,2026,local,12,7,5,4,2810,29,7,2.00
+annual,2026,upstream,12,11,8,5,2810,22,7,2.00
+fixed_2023,all,local,26,15,4,3,6114,65,14,5.00
+fixed_2023,all,upstream,26,25,20,9,6114,131,14,5.00
+fixed_2023,2024,local,6,4,0,0,1658,9,3,8.00
+fixed_2023,2024,upstream,6,5,4,1,1658,8,3,8.00
+fixed_2023,2025,local,8,4,1,1,1646,17,4,5.00
+fixed_2023,2025,upstream,8,8,7,3,1646,29,4,5.00
+fixed_2023,2026,local,12,7,3,2,2810,39,7,3.00
+fixed_2023,2026,upstream,12,12,9,5,2810,94,7,3.00
