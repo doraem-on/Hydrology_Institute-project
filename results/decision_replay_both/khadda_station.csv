@@ -1,0 +1,2 @@
+station_code,name,lat,lon,type,nearest_town,warning_level,danger_level,frl,mwl,highest_flow_level
+009-MGD4PTN,Khadda,27.230833333333333,83.8761111111111,Level,,95.0,96.0,,,97.5

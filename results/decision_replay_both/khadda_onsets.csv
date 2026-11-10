@@ -1,0 +1,5 @@
+level,policy,crossing_ist,eligible_issues,first_alert_ist,lead_hours
+warning,model,2026-09-25 15:00:00,24,,
+warning,last_reading,2026-09-25 15:00:00,24,,
+danger,model,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.0
+danger,last_reading,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.0

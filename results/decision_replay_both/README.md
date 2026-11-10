@@ -1,0 +1,20 @@
+# Replaying a warning and a water commitment
+
+Run from the project root with the existing Python environment. The Gandak replay uses the archived gauge and GFS inputs described in the [Gandak reproduction guide](../gandak_warning/README.md). Raw event readings and scored outputs are included here.
+
+    PYTHONPATH=src .venv/bin/python -m hydrology.town_warning_replay
+    PYTHONPATH=src .venv/bin/python scripts/next_day_demand.py --issue-date 2026-11-10
+
+## Khadda
+
+The deposited stage series selects station 009-MGD4PTN (Khadda), code HHS, water_level, metres, from the [CWC archive](https://diagram-chasing.github.io/cwc-flood-forecasts/hourly.parquet), SHA-256 57b71f7cba501e2218278f458c61f8002f21d971dd644d60bc5a0a47838e6e66, distributed under the Open Database License. The series starts on 15 September and ends at 14:00 on 27 October 2026, inclusive. Station metadata come from the [archive catalog](https://github.com/diagram-chasing/cwc-flood-forecasts/blob/main/data/stations.csv). The [WRD bulletin](https://www.fmiscwrdbihar.gov.in/bulletin/Gandak_Model_Result.pdf) independently gives the same 95 and 96 m thresholds.
+
+khadda_hourly_replay.csv records each hourly decision, current barrage inflow, forecast peak and subsequently joined town stage. Empty signals mean missing inputs. The model reads its frozen 2026 coefficients and requires all 24 leads. Each hour's signals are constructed before looking up downstream observations. A first attainment after at least 24 hours strictly below is an onset. The matched town audit requires a below-threshold town reading, both issue-time decisions, and all 24 subsequent hourly stages. Positive hours outside the next-day crossing window count individually. The September timing table also measures the full elapsed time across the named episode. That interval can extend beyond the model horizon. No messages were sent in this simulation.
+
+The [25 September local report](https://www.jagran.com/uttar-pradesh/kushinagar-kushinagar-on-high-alert-gandak-river-flood-threat-from-nepal-rains-40384752.html) documents an administrative alert. The [26 September report](https://www.amarujala.com/uttar-pradesh/kushinagar/narayani-river-surging-alert-issued-for-embankments-flood-threat-to-a-dozen-villages-in-khadda-2026-09-26) documents loudspeaker use. Their publication times establish when reporting was public. Individual delivery times and the onset of flooding at each home are unknown.
+
+## Little Falls
+
+Daily withdrawals use the [existing paired-USGS quality rules](../potomac_diversions/README.md). The [pre-test USGS response](https://waterservices.usgs.gov/nwis/dv/?format=rdb&sites=01646500,01646502&startDT=2010-01-01&endDT=2019-12-31&parameterCd=00060&statCd=00003) is deposited in data/raw/usgs/little_falls_daily_2010_2019.rdb (SHA-256 e60496e0552132c33f0a515ae011f4015410173c5f30a241efbd41f37de2ff6c). The model fits an intercept, two annual sine/cosine harmonics and six weekday indicators by least squares. The fixed cutoff is October 31, 2019. It uses no target-day observations or prior-day withdrawal reports. USGS obtains diversion data monthly, and historical publication vintages are unavailable. The latest approved values can include revisions.
+
+potomac_demand_forecasts.csv records both demand predictions for every date, even when verification is unavailable. In potable-water planning the demand target is the volume actually withdrawn, which may differ from total requests. The baseline uses the fixed historical mean. The supply side uses the saved next-day streamflow forecasts, the prior-day-flow baseline and the original hypothetical allocation limits. Join decisions to observations by target date. Unmet use is observed withdrawal minus feasible delivery. Excess commitment is the promised amount above realized supply. The separately labelled November 11 estimate refits the same calendar model on all eligible archived demand observations. A [2026 query](https://waterservices.usgs.gov/nwis/dv/?format=rdb&sites=01646500,01646502&startDT=2026-01-01&endDT=2026-08-31&parameterCd=00060&statCd=00003) returned only unadjusted flow when checked on November 10.

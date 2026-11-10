@@ -3,7 +3,7 @@
 
 ### Abstract
 
-We tested when river forecasts help people issue flood warnings or decide how much water to promise. At Gandak Barrage in India, upstream water levels and archived rainfall forecasts gave six hours of warning before the one qualifying high-flow event in 2026. The same model overestimated the subsequent crest by 7,384 m³/s. Across 809 forecasts, its average crest error was 4,715 m³/s when the upstream gauge exceeded its training range and 1,673 m³/s within that range. Earlier monsoons lacked the hourly barrage records needed to validate this warning model. A separate daily model trained in 2024 missed the one assessable crossing in 2025. On the Potomac River, we replayed water commitments against municipal diversions reconstructed from USGS records on 2,041 days. Planning with the lower end of the flow forecast cut overcommitment from 35.7% of days to 0.9%, while leaving an additional 100,674 m³/day of demand unmet on average. Under the simulated allocation rule, the cost of promising water that could not be supplied had to exceed about four times the cost of leaving the same volume unmet for conservative planning to pay off.
+Could a river forecast change a decision in time? We replayed two decisions using historical inputs and checked the outcomes afterwards. On the Gandak River, a model using barrage inflow, upstream water levels and forecast rain signalled six hours before the barrage crossed a study-defined high-flow threshold in September 2026. By then the downstream gauge at Khadda had already reached its official warning level one hour earlier. The signal preceded the higher danger level by 47 hours. Village loudspeaker warnings were documented, but their first receipt time is unknown. Only one hourly flood episode could be tested. On the Potomac, we forecast next-day water use from the calendar and compared it with reconstructed municipal withdrawals on 2,041 days. Mean absolute demand error was 106,378 m³/day, 34% lower than using the historical average. With that demand forecast, planning against a conservative river-flow estimate cut overcommitment from 36.6% to 1.0% of days compared with the ensemble mean, while leaving an extra 98,699 m³/day of demand unmet. The replays show how the location of a gauge and the amount a planner is willing to promise change the practical value of a forecast.
 
 ### Research question and related work
 
@@ -92,13 +92,48 @@ We used each day’s reconstructed volume as the simulated request and kept the 
 | Summer (Jun–Aug) | 540 | 3.57 |
 | Autumn (Sep–Nov) | 483 | 3.48 |
 
-For example, if an excess commitment cost four times as much per unit as an unmet request, conservative planning would have cost less in summer and autumn. The original flow forecasts describe water remaining at the downstream gauge after actual diversions. Here they supply a common reference for comparing policies. The replay uses withdrawals known after the fact, assumes they were requested in full at decision time, and measures simulated outcomes. Operating costs, advance demand estimates and pre-withdrawal flows would be needed for a utility planning trial.
+For example, if an excess commitment cost four times as much per unit as an unmet request, conservative planning would have cost less in summer and autumn. The original flow forecasts describe water remaining at the downstream gauge after actual diversions. Here they supply a common reference for comparing policies. The replay uses withdrawals known after the fact, assumes they were requested in full at decision time, and measures simulated outcomes. The following replay estimates demand in advance. A utility trial would also need actual requests, operating costs and pre-withdrawal flows.
 
 ---
+
+### Replaying the two decisions with the outcomes hidden
+
+For the Gandak we used Khadda, a downstream gauge with published warning and danger levels of 95.0 and 96.0 m [12]. At each issue hour we used the saved model to predict the highest barrage inflow over the next 24 hours. The signal turned on when that forecast reached the existing 5,022 m³/s threshold. The comparison rule used the latest barrage reading against the same threshold. We then looked up the town’s hourly stage [6]. The archive lacks real-time publication timestamps for the barrage readings. Times below are IST and refer to first recorded threshold attainment.
+
+| Khadda in September 2026 | First recorded crossing | When the model signalled |
+| --- | ---: | ---: |
+| Warning level, 95 m | 25 Sep, 15:00 | 1 hour after |
+| Danger level, 96 m | 27 Sep, 15:00 | 47 hours before |
+
+The first model signal was at 16:00 on 25 September. Waiting for the barrage reading itself gave a signal at 22:00, seven hours after Khadda’s warning level and 41 hours before its danger level. The 47-hour interval is elapsed time between the model signal and the observed crossing. The model forecast barrage inflow only. As a test of next-day town warnings, both rules missed the one 95 m onset and both signalled within the 24 hours before the one 96 m onset. Of 51 positive model decision hours below 96 m, 29 had no danger crossing in the next 24 hours. Repeated decisions can belong to one episode.
+
+What did residents hear? A report published at 15:18 on 25 September described a departmental high alert already in effect [13]. A local report updated at 14:51 on 26 September documented loudspeaker warnings in Khadda-area villages, 24 hours and 9 minutes before the gauge first recorded danger level [14]. Neither identifies when the first resident received a warning. No public alert was issued by this research model.
+
+### How much water would we have promised tomorrow?
+
+For each day in 2020–2025 we forecast withdrawals using only the target date’s position in the year and its weekday. The model was fitted once to 3,519 eligible days from 2010 through October 2019. We left a two-month buffer for monthly reporting and used the training-period mean as a constant-demand baseline. The experiment uses the archived previous day’s flow as available when planning. Historical publication and revision times for individual flow readings are unknown. Both demand rules produced 2,192 forecasts, with 2,041 eligible withdrawals for verification. Mean absolute error fell from 161,038 to 106,378 m³/day. The calendar forecast overestimated use by 38,185 m³/day on average.
+
+---
+
+### What did forecasting demand change?
+
+Each policy promised the smaller of predicted demand and its forecast supply budget. Only after fixing the promise did we reveal observed flow and withdrawals. Delivery was limited by the promise, actual supply and actual use. The following comparison holds the demand forecast fixed across all three ways to estimate tomorrow’s flow.
+
+| Supply estimate | Days overcommitted | Mean unmet use (m³/day) |
+| --- | ---: | ---: |
+| Previous day’s flow | 32.5% | 412,318 |
+| Ensemble mean | 36.6% | 408,333 |
+| Ensemble fifth percentile | 1.0% | 507,033 |
+
+Compared with the ensemble mean, the conservative rule avoided 26,063 m³/day of excess commitments while leaving an extra 98,699 m³/day unmet. The break-even unit-cost ratio was 3.79 with forecast demand, compared with 4.01 when the replay was given realized withdrawals in advance. The previous-day flow rule also overcommitted less often than the mean ensemble, at the cost of slightly higher unmet use. All three use the same simulated reserve and diversion cap.
+
+For a dated example, on 10 November 2026 a refit using the available approved archive gave a next-day withdrawal estimate of 1.27 million m³ for 11 November. The latest usable training observation was 29 September 2025. The estimate reflects expected seasonal use. Unusual local conditions can produce larger errors, and the target day was unobserved when this paper was prepared.
 
 ### Next field test
 
 A further monsoon with hourly barrage inflow, timestamped upstream readings and archived weather runs would allow the frozen model’s warnings, misses, false alarms and crest errors to be scored together. It would also allow a comparison with an operational forecast for the same target and issue time.
+
+---
 
 ### Sources
 
@@ -123,3 +158,9 @@ A further monsoon with hourly barrage inflow, timestamped upstream readings and 
 [10] Bihar Water Resources Department, historical barrage reports. https://www.fmiscwrdbihar.gov.in/fmis/gate.aspx
 
 [11] USGS, Chesapeake Bay estimated streamflow methods and Potomac diversion adjustment. https://www.usgs.gov/centers/chesapeake-bay-activities/science/chesapeake-bay-estimated-streamflow-methods
+
+[12] Bihar Water Resources Department. Gandak gauge forecast bulletin, 2 June 2026. https://www.fmiscwrdbihar.gov.in/bulletin/Gandak_Model_Result.pdf
+
+[13] Dainik Jagran, Kushinagar, 25 September 2026. Departmental alert for the Gandak. https://www.jagran.com/uttar-pradesh/kushinagar-kushinagar-on-high-alert-gandak-river-flood-threat-from-nepal-rains-40384752.html
+
+[14] Amar Ujala, Kushinagar, 26 September 2026. Loudspeaker warnings in Khadda-area villages. https://www.amarujala.com/uttar-pradesh/kushinagar/narayani-river-surging-alert-issued-for-embankments-flood-threat-to-a-dozen-villages-in-khadda-2026-09-26

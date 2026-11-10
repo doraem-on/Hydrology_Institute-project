@@ -5,36 +5,16 @@ import numpy as np
 import pandas as pd
 
 from hydrology.decision_replay import replay
+from hydrology.withdrawals import demand_records
 
 RAW = Path("data/raw/usgs/little_falls_daily_2020_2025.rdb")
 OUT = Path("results/potomac_diversions")
-CFS_TO_M3_DAY = 0.028316846592 * 86400
-
-
-def demand_records(forecasts):
-    rows = [line.rstrip().split("\t") for line in RAW.read_text().splitlines() if line.startswith("USGS\t")]
-    data = pd.DataFrame(rows, columns=["agency","site","date","cfs","status"])
-    flows = data.pivot(index="date", columns="site", values="cfs").astype(float)
-    status = data.pivot(index="date", columns="site", values="status")
-    table = pd.DataFrame(index=pd.Index(forecasts.date, name="date"))
-    table["unadjusted_cfs"] = flows["01646500"]
-    table["adjusted_cfs"] = flows["01646502"]
-    table["unadjusted_status"] = status["01646500"]
-    table["adjusted_status"] = status["01646502"]
-    table["diversion_m3_day"] = (table.adjusted_cfs - table.unadjusted_cfs) * CFS_TO_M3_DAY
-    approved = {"A", "A:R"}
-    table["quality"] = np.select([
-        table.diversion_m3_day.isna(),
-        ~table.adjusted_status.isin(approved) | ~table.unadjusted_status.isin(approved),
-        table.diversion_m3_day.le(0)],
-        ["missing","estimated_or_provisional","nonpositive_difference"], default="included")
-    return table.reset_index()
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     forecasts = pd.read_csv("results/baseline_seed42/test_predictions.csv")
-    records = demand_records(forecasts)
+    records = demand_records(forecasts, RAW)
     records.to_csv(OUT / "diversion_by_date.csv", index=False, float_format="%.3f")
     f = forecasts.merge(records[records.quality == "included"], on="date", validate="one_to_one")
     demand = f.diversion_m3_day.to_numpy()

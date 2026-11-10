@@ -1,0 +1,5 @@
+level,stage_m,policy,matched_below_hours,alert_hours,false_alert_hours,observed_onsets,assessable_onsets,warned,missed
+warning,95.0,model,702,0,0,1,1,0,1
+warning,95.0,last_reading,702,0,0,1,1,0,1
+danger,96.0,model,784,51,29,1,1,1,0
+danger,96.0,last_reading,784,45,23,1,1,1,0

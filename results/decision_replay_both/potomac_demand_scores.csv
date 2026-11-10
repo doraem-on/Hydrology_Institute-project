@@ -1,0 +1,3 @@
+policy,trained_through,training_days,forecast_days,verified_days,mae_m3_day,rmse_m3_day,mean_bias_m3_day
+calendar,2019-10-31,3519,2192,2041,106377.97,137900.29,38185.39
+training_mean,2019-10-31,3519,2192,2041,161037.83,192921.81,36032.15

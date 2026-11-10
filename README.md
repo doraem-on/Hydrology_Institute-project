@@ -10,7 +10,7 @@ documents the archived upstream observations, issued precipitation forecasts and
 matched comparison. The [original Gandak pilot](results/gandak_hourly/README.md)
 records the barrage-only benchmark. The [monsoon validation results](results/monsoon_transfer/README.md)
 include the frozen hourly model, crest flags and independently tested daily benchmark.
-The [Potomac diversion replay](results/potomac_diversions/README.md) uses USGS-derived daily withdrawals.
+The [Potomac diversion replay](results/potomac_diversions/README.md) uses USGS-derived daily withdrawals. The [two-river decision replay](results/decision_replay_both/README.md) adds Khadda’s observed warning timeline and next-day Potomac demand forecasts.
 
 ## River-basin digital-twin extension
 

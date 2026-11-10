@@ -15,7 +15,8 @@ import pandas as pd
 from hydrology.twin import allocate_water
 
 
-def replay(frame, *, demand_m3, environmental_flow_cms, diversion_fraction):
+def replay(frame, *, demand_m3, environmental_flow_cms, diversion_fraction, realized_demand_m3=None):
+    """Plan against the supplied demand forecast, then score against actual daily demand."""
     columns = ['observed_cms', 'persistence_cms', 'bma_mean_cms', 'bma_lower90_cms']
     if not {'date', *columns} <= set(frame):
         raise ValueError('Missing saved forecast columns')
@@ -30,6 +31,9 @@ def replay(frame, *, demand_m3, environmental_flow_cms, diversion_fraction):
         demands = np.broadcast_to(demands, (len(frame), len(demands)))
     if demands.ndim != 2 or demands.shape[0] != len(frame) or not demands.shape[1]:
         raise ValueError("Expected a user demand vector or one demand row per forecast day")
+    actual = demands.sum(axis=1) if realized_demand_m3 is None else np.asarray(realized_demand_m3, dtype=float)
+    if actual.shape != (len(frame),) or not np.isfinite(actual).all() or (actual < 0).any():
+        raise ValueError("Expected one finite nonnegative realized demand per day")
     observed_budget = np.maximum(frame.observed_cms.to_numpy()-environmental_flow_cms, 0)*86400*diversion_fraction
     rows = []
     for policy, col in [('persistence', 'persistence_cms'), ('bma_mean', 'bma_mean_cms'),
@@ -39,12 +43,12 @@ def replay(frame, *, demand_m3, environmental_flow_cms, diversion_fraction):
             result = allocate_water([getattr(row, col)], demand,
                 environmental_flow_cms=environmental_flow_cms, diversion_fraction=diversion_fraction)
             planned = float(result['allocation_m3'].sum())
-            feasible = min(planned, observed_budget[index])
-            oracle = min(float(np.sum(demand)), observed_budget[index])
+            feasible = min(planned, observed_budget[index], actual[index])
+            oracle = min(actual[index], observed_budget[index])
             rows.append({'date': str(row.date), 'policy': policy,
                 'planned_m3': planned, 'feasible_delivery_m3': feasible,
                 'overcommitment_m3': max(planned-observed_budget[index], 0),
-                'unmet_demand_m3': float(np.sum(demand))-feasible,
+                'unmet_demand_m3': actual[index]-feasible,
                 'foregone_feasible_delivery_m3': oracle-feasible})
     result = pd.DataFrame(rows)
     summary = []

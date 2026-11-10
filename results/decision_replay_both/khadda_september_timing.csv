@@ -1,0 +1,5 @@
+level,threshold_m,crossing_ist,policy,first_signal_ist,hours_before_crossing
+warning,95.0,2026-09-25 15:00:00,model,2026-09-25 16:00:00,-1.0
+warning,95.0,2026-09-25 15:00:00,last_reading,2026-09-25 22:00:00,-7.0
+danger,96.0,2026-09-27 15:00:00,model,2026-09-25 16:00:00,47.0
+danger,96.0,2026-09-27 15:00:00,last_reading,2026-09-25 22:00:00,41.0
