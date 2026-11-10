@@ -1,0 +1,7 @@
+level,method,paired,observed_high,hits,misses,false_high,mae_m
+warning,local,10,1,1,0,0,0.1327
+warning,upstream,10,1,1,0,0,0.1115
+warning,official_stage_m,10,1,1,0,0,0.0900
+danger,local,10,1,0,1,0,0.1327
+danger,upstream,10,1,0,1,0,0.1115
+danger,official_stage_m,10,1,0,1,0,0.0900

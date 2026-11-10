@@ -12,6 +12,8 @@ records the barrage-only benchmark. The [Gandak model comparison](results/gandak
 include the frozen hourly model, crest flags and independently tested daily benchmark.
 The [Potomac diversion replay](results/potomac_diversions/README.md) uses USGS-derived daily withdrawals. The [two-river decision replay](results/decision_replay_both/README.md) adds Khadda’s observed warning timeline and next-day Potomac demand forecasts.
 
+The [Khadda monsoon replay](results/khadda_multiseason/README.md) compares local and upstream gauges across three test seasons, including false alarms, official forecasts, rainfall and simulated gauge failures.
+
 ## River-basin digital-twin extension
 
 The [implementation and research protocol](docs/digital_twin.md) adds SAR

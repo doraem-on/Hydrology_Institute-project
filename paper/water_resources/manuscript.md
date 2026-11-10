@@ -3,7 +3,7 @@
 
 ### Abstract
 
-Could a river forecast change a decision in time? We replayed two decisions using historical inputs and checked the outcomes afterwards. On the Gandak River, a model using barrage inflow, upstream water levels and forecast rain signalled six hours before the barrage crossed a study-defined high-flow threshold in September 2026. Random forest and gradient boosting, tested on identical inputs, signalled at the same hour as ridge regression. Khadda had already reached its official warning level one hour earlier. The signal preceded the higher danger level by 47 hours. Village loudspeaker warnings were documented, but their first receipt time is unknown. Only one hourly flood episode could be tested. On the Potomac, we forecast next-day water use from the calendar and compared it with reconstructed municipal withdrawals on 2,041 days. Mean absolute demand error was 106,378 m³/day, 34% lower than using the historical average. With that demand forecast, planning against a conservative river-flow estimate cut overcommitment from 36.6% to 1.0% of days compared with the ensemble mean, while leaving an extra 98,699 m³/day of demand unmet. The replays show how the location of a gauge and the amount a planner is willing to promise change the practical value of a forecast.
+We replayed two decisions using river and weather records. On the Gandak, three models signalled the September 2026 rise in barrage inflow six hours ahead, one hour after downstream Khadda had already reached its warning level. We then forecast Khadda’s water level directly. Across three test monsoons in 2024–2026, adding upstream Triveni readings gave advance warning for 24 of 26 qualifying crossings of 95 m, compared with 15 using the town gauge alone. For the 14 crossings both caught, the median gain was 4.5 hours. False alert hours increased from 49 to 68. On ten matched next-day forecasts, Bihar’s official bulletins had a mean absolute stage error of 9 cm, compared with 11 cm for the upstream model. On the Potomac, we forecast next-day water use and compared it with reconstructed municipal withdrawals on 2,041 days. Mean absolute demand error was 34% lower than using the historical average. Conservative planning cut overcommitment from 36.6% to 1.0% of days while leaving another 98,699 m³/day of demand unmet. Both cases measure what the decision gains and what it costs.
 
 ### Research question and related work
 
@@ -75,6 +75,37 @@ A separate test used the morning readings at their recorded frequency. A ridge r
 
 ---
 
+### How much warning did the upstream gauge add at Khadda?
+
+The barrage replay forecast inflow at a different location. Here we forecast water level at the town itself. We extracted June–October hourly readings from CWC [6] for Khadda and upstream Triveni, near the barrage. The archive starts in August 2023 and ends in October 2026. For each test season from 2024 to 2026, we trained only on earlier seasons, using the same examples for both models. At each hourly decision, a ridge regression used Khadda’s latest level and its changes over 1–24 hours. A second regression added the same measurements at Triveni. We assumed a one-hour gauge reporting delay at both stations. Historical release and revision times are unknown.
+
+A warning predicted that Khadda would reach 95 m within the next 24 hours. A new crossing required a full preceding day below 95 m. Individual crossings can occur during the same monsoon flood. The 2023 training record supplied eight such crossings. There were six assessable crossings in 2024, eight in 2025 and twelve in 2026.
+
+| Town warning at 95 m | Khadda only | Khadda and Triveni |
+| --- | ---: | ---: |
+| Crossings warned / 26 | 15 | 24 |
+| Missed crossings | 11 | 2 |
+| False alert hours / 6,114 eligible hours | 49 | 68 |
+| Runs of consecutive false alert hours | 30 | 28 |
+
+Both models warned for 14 crossings. Adding Triveni was earlier on 11, tied on two, and later on one. The median gain was 4.5 hours, ranging from 12 hours later to 20 hours earlier. Triveni caught ten crossings the local model missed and lost one the local model caught. On 25 September 2026, the upstream model signalled at 07:00 IST and the local model at 14:00, before the town reached 95 m at 15:00. Residents’ first receipt time remains unknown.
+
+At the higher 96 m danger level, the upstream model warned for all four assessable crossings and the local model warned for three. Neither produced a false danger-alert hour in this sample. Four crossings give limited evidence about rare events.
+
+---
+
+### Official forecasts, rain and gauge failures
+
+We verified ten dated Bihar Water Resources Department bulletins [15] against the same Khadda observation and our two models at exactly the same 24-hour lead. Each 15:00 IST bulletin gave a water level for 15:00 the next day. Mean absolute errors were 9.0 cm for the official product, 11.2 cm with Triveni, and 13.3 cm with Khadda alone. The one matched observation at or above 95 m was 96.00 m on 27 September 2026. All three forecasts exceeded 95 m, but fell below 96 m. The official forecast was 95.99 m. None forecast a high level on the other nine dates. This sparse set measures stage accuracy at specified hours. It cannot establish the first public alert across all 26 crossings.
+
+The CWC advisory dated 3 July 2024 listed severe conditions at Khadda for 6 July [16]. The town reached 96 m at 22:00 IST on 6 July. The upstream model first signalled that day at 15:00 and the local model at 18:00. In that case the published advisory identified the danger days earlier. It covered seven days, while our models forecast up to 24 hours ahead.
+
+Could forecast rainfall add more time? The archived weather runs covered part of 2026. We trained all three variants on the same portion of that season before 16 September, then scored the remaining hours. Adding forecast rain to the two gauges gave the same eight hours of warning for the one 95 m crossing and the same 14 hours for the one 96 m crossing. Both variants produced four false warning-level hours and one false danger-level hour. This smaller weather comparison used different training dates from the three-season experiment.
+
+We also simulated six hours of upstream sensor failure every seventh day during the monsoon. If the gauge stopped reporting, the system used the town-only model until upstream history was complete again. If it silently repeated its last value, the system continued forecasting with that reading. Both scenarios warned for 23 of 26 crossings at 95 m, against 24 with intact records. These tests measure a consequence of faulty data. A governance study would also need timestamped records of who issued a warning, how it was delivered and when communities received it.
+
+---
+
 ### Potomac allocation and forecast uncertainty
 
 For USGS gauge 01646500 at Little Falls [9], four neural networks used 30 days of flow history to forecast the next day. Training used 1990–2009, model selection 2010–2014, ensemble calibration 2015–2019, and testing 2020–2025. Across 2,192 test days the stacked LSTM achieved a root-mean-square error of 111.2 m³/s, compared with 145.8 for persistence. The calibrated ensemble supplied a range as well as a mean.
@@ -137,7 +168,7 @@ For a dated example, on 10 November 2026 a refit using the available approved ar
 
 ### Next field test
 
-A further monsoon with hourly barrage inflow, timestamped upstream readings and archived weather runs would allow the frozen model’s warnings, misses, false alarms and crest errors to be scored together. It would also allow a comparison with an operational forecast for the same target and issue time.
+A further monsoon with hourly barrage inflow, timestamped upstream readings and archived weather runs would allow the frozen model’s warnings, misses, false alarms and crest errors to be scored together. A continuous archive of operational forecasts and delivery receipts would extend the ten matched Khadda bulletins to a test of warning delivery across a full season.
 
 ---
 
@@ -170,3 +201,7 @@ A further monsoon with hourly barrage inflow, timestamped upstream readings and 
 [13] Dainik Jagran, Kushinagar, 25 September 2026. Departmental alert for the Gandak. https://www.jagran.com/uttar-pradesh/kushinagar-kushinagar-on-high-alert-gandak-river-flood-threat-from-nepal-rains-40384752.html
 
 [14] Amar Ujala, Kushinagar, 26 September 2026. Loudspeaker warnings in Khadda-area villages. https://www.amarujala.com/uttar-pradesh/kushinagar/narayani-river-surging-alert-issued-for-embankments-flood-threat-to-a-dozen-villages-in-khadda-2026-09-26
+
+[15] Bihar WRD, FMIS daily water level and flood forecasts, dated bulletins. https://www.fmiscwrdbihar.gov.in/bulletin/
+
+[16] Central Water Commission, Daily Flood Situation Report cum Advisories, 3 July 2024. https://cwc.gov.in/sites/default/files/dfsitrepca-03.07.2024.pdf
