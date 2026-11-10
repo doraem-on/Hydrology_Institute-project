@@ -1,0 +1,5 @@
+method,threshold_m3s,eligible_issues,alert_issues,false_alert_issues,false_alert_runs,observed_onsets,assessable_onsets,onsets_warned,mae_24h_m3s
+ridge,5021.65800,739,6,0,0,1,1,1,895.93571
+random_forest,5021.65800,739,6,0,0,1,1,1,770.40753
+gradient_boosting,5021.65800,739,6,0,0,1,1,1,784.13445
+persistence,5021.65800,739,0,0,0,1,1,0,749.10650

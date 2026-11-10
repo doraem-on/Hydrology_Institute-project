@@ -1,0 +1,9 @@
+level,stage_m,policy,matched_below_hours,alert_hours,false_alert_hours,observed_onsets,assessable_onsets,warned,missed
+warning,95.00000,ridge,702,0,0,1,1,0,1
+warning,95.00000,random_forest,702,0,0,1,1,0,1
+warning,95.00000,gradient_boosting,702,0,0,1,1,0,1
+warning,95.00000,persistence,702,0,0,1,1,0,1
+danger,96.00000,ridge,784,51,29,1,1,1,0
+danger,96.00000,random_forest,784,51,29,1,1,1,0
+danger,96.00000,gradient_boosting,784,51,29,1,1,1,0
+danger,96.00000,persistence,784,45,23,1,1,1,0

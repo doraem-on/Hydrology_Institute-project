@@ -1,0 +1,9 @@
+level,policy,crossing_ist,eligible_issues,first_alert_ist,lead_hours
+warning,ridge,2026-09-25 15:00:00,24,,
+warning,random_forest,2026-09-25 15:00:00,24,,
+warning,gradient_boosting,2026-09-25 15:00:00,24,,
+warning,persistence,2026-09-25 15:00:00,24,,
+danger,ridge,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.00000
+danger,random_forest,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.00000
+danger,gradient_boosting,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.00000
+danger,persistence,2026-09-27 15:00:00,22,2026-09-26 15:00:00,24.00000

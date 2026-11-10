@@ -1,0 +1,5 @@
+method,onset_ist,eligible_issues,first_warning_hours,first_signal_ist
+ridge,2026-09-25 22:00:00,24,6.00000,2026-09-25 16:00:00
+random_forest,2026-09-25 22:00:00,24,6.00000,2026-09-25 16:00:00
+gradient_boosting,2026-09-25 22:00:00,24,6.00000,2026-09-25 16:00:00
+persistence,2026-09-25 22:00:00,24,,

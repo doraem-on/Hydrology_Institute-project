@@ -33,7 +33,7 @@ def issue_decisions():
     return issues.rename_axis("issue_ist")
 
 
-def verify(issues, stage, limits):
+def verify(issues, stage, limits, policies=("model", "last_reading")):
     # Work on a true hourly grid. Never bridge a missing reading when dating a crossing.
     stage = stage.sort_index().asfreq("h")
     future = pd.concat([stage.shift(-h) for h in range(1, 25)], axis=1)
@@ -43,8 +43,8 @@ def verify(issues, stage, limits):
         events = stage.index[(stage >= limit) & prior.lt(limit) & (stage.index >= issues.index.min())]
         below = stage.reindex(issues.index).lt(limit)
         observed = future.max(axis=1, skipna=False).reindex(issues.index)
-        common = below & observed.notna() & issues[["model","last_reading"]].notna().all(axis=1)
-        for policy in ["model","last_reading"]:
+        common = below & observed.notna() & issues[list(policies)].notna().all(axis=1)
+        for policy in policies:
             alerts = issues.index[common & issues[policy].fillna(False)]
             false = int(observed.reindex(alerts).lt(limit).sum())
             eligible_events, warned = 0, 0
@@ -62,12 +62,12 @@ def verify(issues, stage, limits):
     return pd.DataFrame(rows), pd.DataFrame(onsets)
 
 
-def september_timing(issues, stage, limits):
+def september_timing(issues, stage, limits, policies=("model", "last_reading")):
     # Dates define the previously studied September event, not the model's issue rule.
     begin, end = pd.Timestamp("2026-09-24"), pd.Timestamp("2026-09-30")
     event = issues.loc[begin:end]
     first_signals = {name: event.index[event[name].fillna(False)].min()
-                     for name in ["model","last_reading"]}
+                     for name in policies}
     rows = []
     for label, limit in limits.items():
         episode = stage.loc[begin:end]
